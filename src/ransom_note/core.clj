@@ -3,8 +3,8 @@
 
 (defn can-make-ransom-note
   [message magazine]
-  (let [count-message (frequencies message)
-        count-magazine (frequencies magazine)]
+  (let [count-message (frequencies (filter #(not (Character/isWhitespace %)) message))
+        count-magazine (frequencies (filter #(not (Character/isWhitespace %)) magazine))]
     (cond
       (empty? message) true
       (empty? magazine) false
