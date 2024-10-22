@@ -1,3 +1,4 @@
-{:paths ["src" "resources"]
+{:paths ["src" "resources" "test"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}}
- :main ransom-note.core}
+ :main ransom-note.core
+ :aliases {:test {:main-opts ["-m" "clojure.test"]}}}
