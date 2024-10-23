@@ -13,12 +13,12 @@
       (loop [acc {}
              bytes-read (atom 0)
              buffer (char-array config/CHUNK_SIZE)]
-        (when (pos? (do (reset! bytes-read (.read reader buffer)) @bytes-read))
+        (when (pos? (reset! bytes-read (.read reader buffer)))
           (let [chunk (String. buffer 0 @bytes-read)
                 chunk-count (utils/count-non-whitespace-chars chunk)
                 updated-acc (merge-with + acc chunk-count)]
             ;; Check if accumulated counts are enough to construct the message
-            ;;(println {:magazine updated-acc})
+            (println {:magazine updated-acc})
             (if (utils/enough-letters message-count updated-acc)
               true ;; Stop processing and return true
               (recur updated-acc bytes-read buffer))))))))
