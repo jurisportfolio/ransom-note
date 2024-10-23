@@ -1,27 +1,33 @@
-(ns ransom-note.core)
+(ns ransom-note.core
+  (:require [clojure.java.io :as io]
+            [ransom-note.utils :as utils]
+            [ransom-note.config :as config]))
 
 
 (defn can-make-ransom-note
-  [message magazine]
-  (let [count-message (frequencies (filter #(not (Character/isWhitespace %)) message))
-        count-magazine (frequencies (filter #(not (Character/isWhitespace %)) magazine))]
-    (cond
-      (empty? message) true
-      (empty? magazine) false
-      :else (every? (fn [[char count]]
-                      (>= (get count-magazine char 0) count))
-                    count-message))))
+  [message-file-name magazine-file-name]
+  (let [message-count (utils/count-non-whitespace-chars (utils/read-message message-file-name))]
+    (with-open [reader (io/reader magazine-file-name)]
+      (loop [acc {}
+             bytes-read (atom 0)]
+        (let [buffer (char-array config/CHUNK_SIZE)]
+          (when (pos? (do (reset! bytes-read (.read reader buffer)) @bytes-read))
+            (let [chunk (String. buffer 0 @bytes-read)
+                  chunk-count (utils/count-non-whitespace-chars chunk)
+                  updated-acc (merge-with + acc chunk-count)]
+              ;; Check if accumulated counts are enough to construct the message
+              (if (every? (fn [[letter count]]
+                            (>= (get updated-acc letter 0) count))
+                          message-count)
+                true ;; Stop processing and return true
+                (recur updated-acc bytes-read)))))))))
 
-(defn read-from-file [file-name]
-  (slurp file-name))
 
 (defn -main
   "Entering point"
   [& args]
   (let [message-file-name (first args)
-        magazine-file-name (second args)
-        message (read-from-file message-file-name)
-        magazine (read-from-file magazine-file-name)]
-    (if (can-make-ransom-note message magazine)
+        magazine-file-name (second args)]
+    (if (can-make-ransom-note message-file-name magazine-file-name)
       (print "true")
       (print "false"))))
