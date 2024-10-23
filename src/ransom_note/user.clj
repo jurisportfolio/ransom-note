@@ -52,7 +52,7 @@
                              (is (core/can-make-ransom-note "hello" "ollheh"))))          ; characters present but reordered
 
 
-  (get-file-size "magazine.txt")
+  (get-file-size "magazine_false.txt")
   (get-file-size "message.txt"))
 
 
