@@ -16,22 +16,21 @@
   - magazine-file-name: A string representing the path to the magazine file."
 
   [message-file-name magazine-file-name]
-  (println "Start function: ")
-  (let [message-count (utils/count-non-whitespace-chars (utils/read-message message-file-name))]
+  (let [message-count (utils/count-non-whitespace-chars (utils/read-message message-file-name))
+        buffer (char-array config/CHUNK_SIZE)]
     ;;(println {:message message-count})
     (with-open [reader (io/reader magazine-file-name)]
       (loop [acc {}
-             bytes-read (atom 0)
-             buffer (char-array config/CHUNK_SIZE)]
-        (when (utils/read-from-file bytes-read reader buffer)
-          (let [chunk (String. buffer 0 @bytes-read)
+             bytes-read-atom (atom 0)]
+        (when (utils/read-from-file bytes-read-atom reader buffer)
+          (let [chunk (String. buffer 0 @bytes-read-atom)
                 chunk-count (utils/count-non-whitespace-chars chunk)
                 updated-acc (merge-with + acc chunk-count)]
             ;; Check if accumulated counts are enough to construct the message
             ;;(println {:magazine updated-acc})
             (if (utils/enough-letters message-count updated-acc)
               true ;; Stop processing and return true
-              (recur updated-acc bytes-read buffer))))))))
+              (recur updated-acc bytes-read-atom))))))))
 
 
 (defn -main
