@@ -5,6 +5,16 @@
 
 
 (defn can-make-ransom-note
+  "Checks if a ransom note can be constructed from the characters in the magazine file.
+
+  It reads the message file, counts non-whitespace characters, and processes the magazine file in chunks.
+  The function returns true if all characters needed for the message are available in the magazine,
+  false otherwise.
+
+  Parameters:
+  - message-file-name: A string representing the path to the message file.
+  - magazine-file-name: A string representing the path to the magazine file."
+
   [message-file-name magazine-file-name]
   (println "Start function: ")
   (let [message-count (utils/count-non-whitespace-chars (utils/read-message message-file-name))]
@@ -25,7 +35,16 @@
 
 
 (defn -main
-  "Entering point"
+  "Entry point of the program, which processes command line arguments for the message and magazine files.
+
+  It checks whether the ransom note can be constructed from the magazine file and prints
+  'true' or 'false' accordingly.
+  The first argument should be the path to the message file and the second argument should be the path
+  to the magazine file.
+
+  Parameters:
+  - & args: A sequence of command line arguments."
+
   [& args]
   (let [message-file-name (first args)
         magazine-file-name (second args)]
