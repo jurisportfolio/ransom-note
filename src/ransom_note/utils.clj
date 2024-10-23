@@ -32,3 +32,10 @@
 (defn count-non-whitespace-chars
   [text]
   (frequencies (filter #(not (Character/isWhitespace %)) text)))
+
+
+(defn enough-letters
+  [message-count magazine-count]
+  (every? (fn [[letter count]]
+            (>= (get magazine-count letter 0) count))
+          message-count))

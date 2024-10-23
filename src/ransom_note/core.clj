@@ -4,13 +4,6 @@
             [ransom-note.config :as config]))
 
 
-(defn enough-letters
-  [message-count magazine-count]
-  (every? (fn [[letter count]]
-            (>= (get magazine-count letter 0) count))
-          message-count))
-
-
 (defn can-make-ransom-note
   [message-file-name magazine-file-name]
   (println "Start function: ")
@@ -18,17 +11,17 @@
     ;;(println {:message message-count})
     (with-open [reader (io/reader magazine-file-name)]
       (loop [acc {}
-             bytes-read (atom 0)]
-        (let [buffer (char-array config/CHUNK_SIZE)]
-          (when (pos? (do (reset! bytes-read (.read reader buffer)) @bytes-read))
-            (let [chunk (String. buffer 0 @bytes-read)
-                  chunk-count (utils/count-non-whitespace-chars chunk)
-                  updated-acc (merge-with + acc chunk-count)]
-              ;; Check if accumulated counts are enough to construct the message
-              ;;(println {:magazine updated-acc})
-              (if (enough-letters message-count updated-acc)
-                true ;; Stop processing and return true
-                (recur updated-acc bytes-read)))))))))
+             bytes-read (atom 0)
+             buffer (char-array config/CHUNK_SIZE)]
+        (when (pos? (do (reset! bytes-read (.read reader buffer)) @bytes-read))
+          (let [chunk (String. buffer 0 @bytes-read)
+                chunk-count (utils/count-non-whitespace-chars chunk)
+                updated-acc (merge-with + acc chunk-count)]
+            ;; Check if accumulated counts are enough to construct the message
+            ;;(println {:magazine updated-acc})
+            (if (utils/enough-letters message-count updated-acc)
+              true ;; Stop processing and return true
+              (recur updated-acc bytes-read buffer))))))))
 
 
 (defn -main
