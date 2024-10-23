@@ -16,17 +16,13 @@
       nil)))
 
 
-(defn read-from-file [file-name]
-  (slurp file-name))
-
-
 (defn read-message
   "Returns str with message from message file,
   or throw exception, if file is bigger than max file size"
   [message-file-name]
   (if (> (file-size message-file-name) config/MAX_MESSAGE_FILE_SIZE_MB)
     (throw (ex-info "Message file is too big" {:file message-file-name}))
-    (read-from-file message-file-name)))
+    (slurp message-file-name)))
 
 
 (defn count-non-whitespace-chars
