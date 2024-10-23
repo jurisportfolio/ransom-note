@@ -35,3 +35,8 @@
   (every? (fn [[letter count]]
             (>= (get magazine-count letter 0) count))
           message-count))
+
+
+(defn read-from-file
+  [bytes-read reader buffer]
+  (pos? (reset! bytes-read (.read reader buffer))))
