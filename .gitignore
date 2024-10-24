@@ -2,7 +2,5 @@
 /.cpcache/
 ransom_note.iml
 resources/magazine_big.txt
-resources/magazine_midlesize_true.txt
-resources/magazine_midlesize_false.txt
-
-temp.clj
+resources/magazine_midsize_true.txt
+resources/magazine_midsize_false.txt

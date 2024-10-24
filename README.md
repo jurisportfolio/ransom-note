@@ -64,9 +64,9 @@ To execute the ransom note program, use the following command:
 Replace `<message-file>` with the path to your message file and `<magazine-file>` with the path to your magazine file. 
 This script will check if the ransom note can be constructed from the characters in the magazine file.
 
-### Running Tests
+### Running Functional Tests
 
-To run the tests for the ransom note program, use the following command:
+To run the functional tests for the ransom note program, use the following command:
 
 ```bash
 ./run_tests.sh
@@ -74,6 +74,24 @@ To run the tests for the ransom note program, use the following command:
 
 This script will execute the tests defined in `test/ransom_note/core_test.clj`, allowing you to verify 
 the functionality and correctness of the program.
+
+For testing cases where the message or magazine files are larger than 1MB, 
+I am using local files that are excluded from Git:
+```
+resources/magazine_big.txt
+resources/magazine_midlesize_true.txt
+resources/magazine_midlesize_false.txt
+```
+If you want to conduct functional tests on large files, please create your own files with these names in 
+the `resources` directory and uncomment the corresponding tests in `core_test.clj`.
+
+
+### TODO
+
+1. Implement unit tests.
+2. Implement error tests.
+3. Enhance logging for better debugging and tracking.
+
 
 
 
