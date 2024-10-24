@@ -88,8 +88,13 @@
   - & args: A sequence of command line arguments."
 
   [& args]
-  (let [message-file-name (first args)
-        magazine-file-name (second args)]
-    (if (can-make-ransom-note message-file-name magazine-file-name)
-      (print "true")
-      (print "false"))))
+  (if (not= (count args) 2)
+    (do
+      (println "There should be two arguments. Usage: <message-file> <magazine-file>")
+      ;; Exit with a non-zero status to indicate an error
+      (System/exit 1))
+    (let [message-file-name (first args)
+          magazine-file-name (second args)]
+      (if (can-make-ransom-note message-file-name magazine-file-name)
+        (print "true")
+        (print "false")))))
