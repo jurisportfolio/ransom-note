@@ -5,8 +5,8 @@
 
 (deftest test-can-make-ransom-note
   (testing "Ransom note creation"
-    (is (not (core/can-make-ransom-note "message.txt" "magazine_false.txt")))
-    (is (core/can-make-ransom-note "message.txt" "magazine_true.txt"))
+    (is (not (core/can-make-ransom-note "resources/message.txt" "resources/magazine_false.txt")))
+    (is (core/can-make-ransom-note "resources/message.txt" "resources/magazine_true.txt"))
     #_(is (not (core/can-make-ransom-note "message.txt" "magazine_big.txt")))))
 
 
