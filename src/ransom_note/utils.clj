@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [ransom-note.config :as config])
-  (:import (java.io FileNotFoundException)))
+  (:import (java.io FileNotFoundException IOException)))
 
 
 (defn file-size
@@ -55,7 +55,13 @@
       (> size config/MAX_MESSAGE_FILE_SIZE_MB)
       (throw (ex-info "Message file is too big" {:file message-file-name}))
 
-      :else (slurp message-file-name))))
+      :else
+      (try
+        (slurp message-file-name)
+        (catch IOException e
+          (throw (ex-info "Error reading file. The file may be corrupted or invalid."
+                          {:file message-file-name
+                           :error (.getMessage e)})))))))
 
 
 (defn count-non-whitespace-chars
