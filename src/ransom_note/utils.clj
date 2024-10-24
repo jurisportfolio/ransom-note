@@ -24,16 +24,26 @@
 (defn read-message
   "Reads and returns the content of the specified message file.
 
-  If the file size exceeds the maximum allowed size defined in config, an exception is thrown.
-  Otherwise, the content is read using slurp and returned as a string.
-
   Parameters:
-  - message-file-name: A string representing the path to the message file."
+  - message-file-name: A string representing the path to the message file.
+
+  Throws:
+  - IllegalArgumentException if the file is empty.
+  - IllegalArgumentException if the file size exceeds the maximum allowed size.
+
+  Returns:
+  - A string containing the content of the message file if valid."
 
   [message-file-name]
-  (if (> (file-size message-file-name) config/MAX_MESSAGE_FILE_SIZE_MB)
-    (throw (ex-info "Message file is too big" {:file message-file-name}))
-    (slurp message-file-name)))
+  (let [size (file-size message-file-name)]
+    (cond
+      (zero? size)
+      (throw (ex-info "File is empty" {:file message-file-name}))
+
+      (> size config/MAX_MESSAGE_FILE_SIZE_MB)
+      (throw (ex-info "Message file is too big" {:file message-file-name}))
+
+      :else (slurp message-file-name))))
 
 
 (defn count-non-whitespace-chars
