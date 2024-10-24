@@ -89,7 +89,8 @@ the `resources` directory and uncomment the corresponding tests in `core_test.cl
 ### TODO
 
 1. Implement unit tests.
-2. Enhance logging for better debugging and tracking.
+2. Implement error tests.
+3. Enhance logging for better debugging and tracking.
 
 
 
