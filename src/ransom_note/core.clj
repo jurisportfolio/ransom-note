@@ -93,8 +93,16 @@
       (println "There should be two arguments. Usage: <message-file> <magazine-file>")
       ;; Exit with a non-zero status to indicate an error
       (System/exit 1))
-    (let [message-file-name (first args)
-          magazine-file-name (second args)]
-      (if (can-make-ransom-note message-file-name magazine-file-name)
-        (print "true")
-        (print "false")))))
+    (try
+      (let [message-file-name (first args)
+            magazine-file-name (second args)]
+        (if (can-make-ransom-note message-file-name magazine-file-name)
+          (print "true")
+          (print "false")))
+      (catch Exception e
+        (let [data (ex-data e)
+              message (ex-message e)]
+          (println "An unexpected error occurred:")
+          (println message)
+          (println data)
+          (System/exit 1))))))
