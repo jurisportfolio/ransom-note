@@ -7,9 +7,6 @@
 (defn file-size
   "Returns the size of the file at the specified file path in bytes.
 
-  If the file exists, the length is returned.
-  If the file does not exist, a FileNotFoundException is thrown with a descriptive message.
-
   Parameters:
   - file-path: A string representing the path to the file."
 
@@ -49,9 +46,6 @@
 (defn count-non-whitespace-chars
   "Counts the frequency of non-whitespace characters in the provided text.
 
-  The function filters out any whitespace characters and computes the frequency of each remaining character.
-  It returns a map where keys are the characters and values are their counts.
-
   Parameters:
   - text: A string to be analyzed for non-whitespace characters."
 
@@ -61,9 +55,6 @@
 
 (defn enough-letters
   "Determines if the magazine contains enough letters to construct the specified message.
-
-  It compares the character counts from the message and the magazine.
-  Returns true if all letters needed for the message are present in sufficient quantities in the magazine.
 
   Parameters:
   - message-count: A map containing character counts from the message.
@@ -77,9 +68,6 @@
 
 (defn read-from-file
   "Reads a chunk of data from the provided reader into the specified buffer.
-
-  The number of bytes read is stored in the provided atom, which is updated by this function.
-  Returns true if at least one byte was read, false otherwise.
 
   Parameters:
   - bytes-read: An atom that keeps track of the number of bytes read.
