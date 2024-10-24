@@ -1,5 +1,6 @@
 (ns ransom-note.utils
   (:require [clojure.java.io :as io]
+            [clojure.string :as str]
             [ransom-note.config :as config])
   (:import (java.io FileNotFoundException)))
 
@@ -8,14 +9,28 @@
   "Returns the size of the file at the specified file path in bytes.
 
   Parameters:
-  - file-path: A string representing the path to the file."
+  - file-path: A string representing the path to the file.
+
+  Throws:
+  - FileNotFoundException if the file does not exist.
+  - IllegalArgumentException if the file is not a valid text file (not .txt).
+
+  Returns:
+  - The size of the file in bytes if it exists and is a valid text file."
 
   [file-path]
   (let [file (io/file file-path)]
-    (if (.exists file)
-      (.length file)  ;; Get file length if it exists
+    (cond
+      ;; Throw exception if file not in txt format
+      (not (= (last (str/split file #"\.")) "txt"))
+      (throw (ex-info "File is not a valid text file. Use txt file." {:file-path file-path}))
+      ;; Throw exception if file doesn't exist
+      (not (.exists file))
       (throw (FileNotFoundException.
-               (str file-path " (No such file or directory)"))))))  ;; Throw exception if file doesn't exist))
+               (str file-path " (No such file or directory)")))
+      ;; Returns file length if it exists
+      :else (.length file))))
+
 
 
 (defn read-message
