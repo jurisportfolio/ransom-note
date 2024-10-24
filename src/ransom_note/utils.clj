@@ -1,6 +1,6 @@
 (ns ransom-note.utils
   (:require [clojure.java.io :as io]
-            [clojure.string :as str]
+            [clojure.string :as s]
             [ransom-note.config :as config])
   (:import (java.io FileNotFoundException IOException)))
 
@@ -22,7 +22,7 @@
   (let [file (io/file file-path)]
     (cond
       ;; Throw exception if file not in txt format
-      (not (= (last (str/split file #"\.")) "txt"))
+      (not (= (last (s/split file-path #"\.")) "txt"))
       (throw (ex-info "File is not a valid text file. Use txt file." {:file-path file-path}))
       ;; Throw exception if file doesn't exist
       (not (.exists file))
